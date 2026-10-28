@@ -24,3 +24,6 @@ jobs:
 
             - name: "install dependencies"
               run: npm install
+            
+            - name: "List dependencies"
+              run: ls
