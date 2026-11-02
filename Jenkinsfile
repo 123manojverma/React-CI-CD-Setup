@@ -1,15 +1,33 @@
 pipeline {
     agent any 
+    options {
+        skipDefaultCheckout(true)
+    }
     stages {
+
+        stage('Clean up code') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Checkout using SCM') {
+            steps {
+                checkout scm // Checkout the code
+            }
+        }
+
         stage ('Build') {
             agent {
                 docker {
                     image 'node:24-alpine'
+                    // args '-u root'
                     reuseNode true // Reuse the node for the next stages
                 }
             }
 
             steps {
+
                 sh '''
                     echo "Node version:"
                     node --version
@@ -29,6 +47,21 @@ pipeline {
 
                     echo "Build completed successfully!"
                     ls -l
+                '''
+            }
+        }
+
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:24-alpine'
+                    reuseNode true
+                }
+            }
+            
+            steps {
+                sh '''
+                    npm run test
                 '''
             }
         }
