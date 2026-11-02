@@ -11,11 +11,23 @@ pipeline {
 
             steps {
                 sh '''
-                    ls -l
+                    echo "Node version:"
                     node --version
+
+                    echo "NPM version:"
                     npm --version
-                    npm install 
+
+                    echo "Configuring npm cache..."
+                    export HOME=/tmp
+                    export npm_config_cache=/tmp/npm-cache
+
+                    echo "Installing dependencies..."
+                    npm ci
+
+                    echo "Building React application..."
                     npm run build
+
+                    echo "Build completed successfully!"
                     ls -l
                 '''
             }
