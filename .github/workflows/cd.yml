@@ -23,10 +23,11 @@ jobs:
               run: npm install -g vercel
 
             - name: "Download build files"
-              uses: actions/download-artifact@v7
+              uses: actions/download-artifact@v8
               with:
                 name: build
                 run-id: ${{github.event.workflow_run.id}}
+                github-token: ${{github.token}}
 
             - name: "Deploy to vercel"
               run: vercel --prod --token=${{secrets.VERCEL_TOKEN}} --confirm --name=cicdproject
