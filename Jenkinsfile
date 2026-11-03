@@ -23,6 +23,12 @@ pipeline {
             }
         }
 
+        stage('Checkout using SCM') {
+            steps {
+                input 'Should we deploy ?'
+            }
+        }
+
         stage ('Build') {
             agent {
                 docker {
