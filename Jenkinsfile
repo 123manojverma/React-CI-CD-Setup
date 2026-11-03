@@ -3,6 +3,11 @@ pipeline {
     options {
         skipDefaultCheckout(true)
     }
+
+    environment {
+        MY_VAR = 'my value'
+    }
+
     stages {
 
         stage('Clean up code') {
@@ -62,6 +67,22 @@ pipeline {
             steps {
                 sh '''
                     npm run test
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:24-alpine'
+                    reuseNode true
+                }
+            }
+
+            steps {
+                sh '''
+                    npm install -g vercel
+                    echo $MY_VAR
                 '''
             }
         }
