@@ -6,6 +6,7 @@ pipeline {
 
     environment {
         MY_VAR = 'my value'
+        VERCEL_TOKEN=credentials('VERCEL_TOKEN')
     }
 
     stages {
@@ -81,8 +82,12 @@ pipeline {
 
             steps {
                 sh '''
+                    export HOME=/tmp
+                    export npm_config_cache=/tmp/npm-cache
+
                     npm install -g vercel
                     echo $MY_VAR
+                    vercel --prod --token=$VERCEL_TOKEN --confirm --name=cicdproject
                 '''
             }
         }
