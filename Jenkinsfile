@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('Checkout using SCM') {
+        stage('Take approval') {
             steps {
                 input 'Should we deploy ?'
             }
